@@ -1,23 +1,24 @@
-// Assignment Code
+// Variable list
 var confirmUpLetter;
 var confirmDownLetter;
 var confirmNumbers;
 var confirmSpecials;
 var choices = [];
 var result = ("");
-// Start Password variable values:
+// Password variable values
 var generateBtn = document.querySelector("#generate");
 var letterLower = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
 var letterUpper = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
 var numbers = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
 var specialCharacters = ["#", "$", "%", "&", "'", "(", ")", "*", "+", ",", "-", ".", "/"];
+// this is the main function for writing the password
 function writePassword() {
   var password = generatePassword();
   var passwordText = document.querySelector("#password");
   passwordText.value = password;
 
 }
-//lines 16-35 review
+// The website prompts the user
 function generatePassword() {
   enter = prompt("Please verify password length starting at 8 to 128.");
 
@@ -31,21 +32,42 @@ function generatePassword() {
     confirmNumbers = confirm("Please verify for numbers.");
     confirmSpecials = confirm("Please verify speical characters.");
   }
-  if (confirmUpLetter === true && confirmDownLetter === true && confirmSpecials === true && confirmNumbers === true) {
-    choices = choices.concat(specialCharacters);
-    choices = choices.concat(letterLower);
-    choices = choices.concat(letterUpper);
-    choices = choices.concat(numbers);
-    console.log(choices);
+  // If the user picks no on all confirms then this gets ran
+  if (confirmUpLetter === false && confirmDownLetter === false && confirmNumbers === false && confirmSpecials === false) {
+    alert("Please pick at least one character");
+    return "Please pick at least one character."
   }
 
+  // If true, it will pull the the choice
+  if (confirmUpLetter === true) {
+    choices = choices.concat(letterUpper);
+  }
+  if (confirmDownLetter === true) {
+    choices = choices.concat(letterLower);
+  }
+  if (confirmSpecials === true) {
+    choices = choices.concat(specialCharacters);
+  }
+  if (confirmNumbers === true) {
+    choices = choices.concat(numbers);
+  }
+
+  // This will randomize the array from the users choices
   for (i = 0; i < enter; i++) {
     result += choices[Math.floor(Math.random() * (choices.length - 1))];
-
   }
-
-  console.log(result);
   return result;
 }
-// Add event listener to generate button
-generateBtn.addEventListener("click", writePassword);
+
+// This will reset after clicking generate button
+function reset() {
+  result = ("");
+  choices = [];
+}
+
+// Event listener to generate button
+generateBtn.addEventListener("click", function () {
+  reset();
+  writePassword();
+});
+
